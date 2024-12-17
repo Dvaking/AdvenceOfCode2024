@@ -26,33 +26,18 @@ def searchWordInGrid(grid, word):
     return count
 
 
-def countXmas(grid):
-    rows = len(grid)
-    cols = len(grid[0])
-    count = 0
+def countXmax():
+    total = 0
+    with open('data.txt') as f:
+        lines = f.readlines()
 
-    def isXmas(x, y):
-        try:
-            diag1 = (
-                (grid[x - 1][y - 1] == 'M' and grid[x][y] == 'A' and grid[x + 1][y + 1] == 'S') or
-                (grid[x - 1][y - 1] == 'S' and grid[x][y]
-                 == 'A' and grid[x + 1][y + 1] == 'M')
-            )
-            diag2 = (
-                (grid[x - 1][y + 1] == 'M' and grid[x][y] == 'A' and grid[x + 1][y - 1] == 'S') or
-                (grid[x - 1][y + 1] == 'S' and grid[x][y]
-                 == 'A' and grid[x + 1][y - 1] == 'M')
-            )
-            return diag1 or diag2
-        except IndexError:
-            return False
-
-    for i in range(1, rows - 1):
-        for j in range(1, cols - 1):
-            if isXmas(i, j):
-                count += 1
-
-    return count
+    for y in range(len(lines)):
+        for x in range(len(lines[y])):
+            if x + 2 < len(lines[y]) and y + 2 < len(lines):
+                if (lines[y][x] == 'M' and lines[y + 1][x + 1] == 'A' and lines[y + 2][x + 2] == 'S') or (lines[y][x] == 'S' and lines[y + 1][x + 1] == 'A' and lines[y + 2][x + 2] == 'M'):
+                    if (lines[y][x + 2] == 'M' and lines[y + 1][x + 1] == 'A' and lines[y + 2][x] == 'S') or (lines[y][x + 2] == 'S' and lines[y + 1][x + 1] == 'A' and lines[y + 2][x] == 'M'):
+                        total += 1
+    return total
 
 def readFileAsGrid(filename):
     with open(filename, 'r') as file:
@@ -91,4 +76,4 @@ word = 'XMAS'
 print(f"The word '{word}' appears {
       searchWordInGrid(output, word)} times in the grid.")
 print(f"The word '{word}' appears {
-      countXmas(output)} times in the grid.")
+      countXmax()} times in the grid.")
